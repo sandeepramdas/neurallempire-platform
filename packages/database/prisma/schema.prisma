@@ -1,0 +1,87 @@
+// Prisma schema for NeurallEmpire Central Database
+// Handles: Authentication, Organizations, Product Access, Subscriptions
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Organizations (Multi-tenant structure)
+model Organization {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  slug      String   @unique
+  ownerId   String   @map("owner_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  productAccess ProductAccess[]
+  subscriptions Subscription[]
+
+  @@map("organizations")
+}
+
+// Product Access (Who can access which product in which org)
+model ProductAccess {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  productSlug    String   @map("product_slug") // 'platform', 'vendornet', etc.
+  role           Role
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId, productSlug])
+  @@index([userId])
+  @@index([organizationId])
+  @@map("product_access")
+}
+
+// Subscriptions (Stripe billing)
+model Subscription {
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId       String             @map("organization_id") @db.Uuid
+  productSlug          String             @map("product_slug")
+  stripeSubscriptionId String?            @map("stripe_subscription_id")
+  stripeCustomerId     String?            @map("stripe_customer_id")
+  plan                 SubscriptionPlan
+  status               SubscriptionStatus
+  trialEndsAt          DateTime?          @map("trial_ends_at") @db.Timestamptz(6)
+  currentPeriodEnd     DateTime?          @map("current_period_end") @db.Timestamptz(6)
+  createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([stripeSubscriptionId])
+  @@map("subscriptions")
+}
+
+// Enums
+enum Role {
+  owner
+  admin
+  member
+  viewer
+}
+
+enum SubscriptionPlan {
+  free
+  starter
+  pro
+  enterprise
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  past_due
+  trialing
+}
