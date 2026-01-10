@@ -26,7 +26,8 @@ const products = [
     description: 'Route optimization and subscription management for dairy delivery',
     icon: Milk,
     color: 'from-green-500 to-emerald-600',
-    href: 'https://github.com/sandeepramdas/dairy-delivery-management',
+    href: '#',
+    comingSoon: true,
   },
   {
     name: 'Nandos',
@@ -50,7 +51,8 @@ const products = [
     description: 'Project management for construction and contracting',
     icon: Building,
     color: 'from-gray-500 to-slate-600',
-    href: 'https://github.com/sandeepramdas/ConstructionERP',
+    href: '#',
+    comingSoon: true,
   },
   {
     name: 'Realty',
@@ -58,7 +60,7 @@ const products = [
     description: 'Property management and real estate operations',
     icon: HomeIcon,
     color: 'from-pink-500 to-rose-600',
-    href: 'https://github.com/sandeepramdas/Realty-PMS',
+    href: 'https://realtypms.vercel.app',
   },
 ]
 
@@ -136,12 +138,19 @@ export default function Home() {
                     <Icon className="h-6 w-6 text-white" />
                   </div>
 
-                  <h4 className="text-xl font-bold text-white mb-2">{product.name}</h4>
+                  <h4 className="text-xl font-bold text-white mb-2">
+                    {product.name}
+                    {product.comingSoon && (
+                      <span className="ml-2 text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">
+                        Coming Soon
+                      </span>
+                    )}
+                  </h4>
                   <p className="text-white/70 text-sm mb-4">{product.description}</p>
 
                   <div className="flex items-center text-blue-400 text-sm font-semibold">
-                    Launch
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition" />
+                    {product.comingSoon ? 'Coming Soon' : 'Launch'}
+                    {!product.comingSoon && <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition" />}
                   </div>
                 </div>
               </a>
