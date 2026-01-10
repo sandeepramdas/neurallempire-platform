@@ -10,7 +10,7 @@ const products = [
     description: 'Intelligent AI agents for automation and business intelligence',
     icon: Brain,
     color: 'from-purple-500 to-indigo-600',
-    href: 'https://platform.neurallempire.com',
+    href: 'https://www.neurallempire.com',
   },
   {
     name: 'VendorNet',
@@ -18,7 +18,7 @@ const products = [
     description: 'B2B supply chain and vendor management platform',
     icon: Package,
     color: 'from-blue-500 to-cyan-600',
-    href: 'https://vendornet.neurallempire.com',
+    href: 'https://vendornet.pages.dev',
   },
   {
     name: 'MilkDelivery',
@@ -26,7 +26,7 @@ const products = [
     description: 'Route optimization and subscription management for dairy delivery',
     icon: Milk,
     color: 'from-green-500 to-emerald-600',
-    href: 'https://milkdelivery.neurallempire.com',
+    href: 'https://github.com/sandeepramdas/dairy-delivery-management',
   },
   {
     name: 'Nandos',
@@ -34,7 +34,7 @@ const products = [
     description: 'Restaurant operations and order management system',
     icon: Coffee,
     color: 'from-red-500 to-orange-600',
-    href: 'https://nandos.neurallempire.com',
+    href: 'https://sandeepramdas.github.io/nandos-india-revamp',
   },
   {
     name: 'Books',
@@ -42,7 +42,7 @@ const products = [
     description: 'Library and bookstore management platform',
     icon: BookOpen,
     color: 'from-yellow-500 to-amber-600',
-    href: 'https://books.neurallempire.com',
+    href: '#',
   },
   {
     name: 'Construction',
@@ -50,7 +50,7 @@ const products = [
     description: 'Project management for construction and contracting',
     icon: Building,
     color: 'from-gray-500 to-slate-600',
-    href: 'https://construction.neurallempire.com',
+    href: 'https://github.com/sandeepramdas/ConstructionERP',
   },
   {
     name: 'Realty',
@@ -58,7 +58,7 @@ const products = [
     description: 'Property management and real estate operations',
     icon: HomeIcon,
     color: 'from-pink-500 to-rose-600',
-    href: 'https://realty.neurallempire.com',
+    href: 'https://github.com/sandeepramdas/Realty-PMS',
   },
 ]
 
