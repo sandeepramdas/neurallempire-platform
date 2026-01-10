@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Brain, Package, Milk, Coffee, BookOpen, Building, Home } from 'lucide-react'
+import { ArrowRight, Brain, Package, Milk, Coffee, BookOpen, Building, Home as HomeIcon } from 'lucide-react'
 import Link from 'next/link'
 
 const products = [
@@ -56,7 +56,7 @@ const products = [
     name: 'Realty',
     slug: 'realty',
     description: 'Property management and real estate operations',
-    icon: Home,
+    icon: HomeIcon,
     color: 'from-pink-500 to-rose-600',
     href: 'https://realty.neurallempire.com',
   },
