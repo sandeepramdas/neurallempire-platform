@@ -1,0 +1,16 @@
+[phases.setup]
+nixPkgs = ["nodejs_22"]
+nixLibs = ["openssl"]
+
+[phases.install]
+cmds = [
+  "cd ../.. && corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile"
+]
+
+[phases.build]
+cmds = [
+  "cd ../.. && pnpm --filter @neurallempire/main-site build"
+]
+
+[start]
+cmd = "cd ../.. && pnpm --filter @neurallempire/main-site start"

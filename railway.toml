@@ -1,10 +1,10 @@
 [build]
-builder = "nixpacks"
-buildCommand = "pnpm install && pnpm --filter @neurallempire/main-site build"
+builder = "NIXPACKS"
+watchPatterns = ["apps/main-site/**"]
 
 [deploy]
-startCommand = "pnpm --filter @neurallempire/main-site start"
+startCommand = "cd apps/main-site && pnpm start"
 healthcheckPath = "/"
 healthcheckTimeout = 100
-restartPolicyType = "on_failure"
+restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
