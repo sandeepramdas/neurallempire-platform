@@ -184,3 +184,89 @@ enum ProductStatus {
   beta
   coming_soon
 }
+
+// Contact Form Submissions
+model ContactSubmission {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  email        String
+  company      String?
+  phone        String?
+  companySize  String?  @map("company_size")
+  timeline     String?
+  message      String   @db.Text
+  isRead       Boolean  @default(false) @map("is_read")
+  isArchived   Boolean  @default(false) @map("is_archived")
+  notes        String?  @db.Text
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("contact_submissions")
+}
+
+// Services (for AI Systems website)
+model Service {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String
+  slug            String   @unique
+  shortDesc       String   @map("short_desc") @db.Text
+  problemStatement String  @map("problem_statement") @db.Text
+  solutionDesc    String   @map("solution_desc") @db.Text
+  features        String[]
+  whoItHelps      String   @map("who_it_helps") @db.Text
+  typicalTimeline String   @map("typical_timeline")
+  icon            String?
+  image           String?
+  order           Int      @default(0)
+  isPublished     Boolean  @default(true) @map("is_published")
+  metaTitle       String?  @map("meta_title")
+  metaDescription String?  @map("meta_description")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([slug])
+  @@index([order])
+  @@map("services")
+}
+
+// Newsletter Subscribers
+model NewsletterSubscriber {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email       String   @unique
+  name        String?
+  isActive    Boolean  @default(true) @map("is_active")
+  tags        String[]
+  subscribedAt DateTime @default(now()) @map("subscribed_at") @db.Timestamptz(6)
+  unsubscribedAt DateTime? @map("unsubscribed_at") @db.Timestamptz(6)
+
+  @@index([email])
+  @@index([isActive])
+  @@map("newsletter_subscribers")
+}
+
+// Site Settings
+model SiteSettings {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key         String   @unique
+  value       String   @db.Text
+  description String?
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("site_settings")
+}
+
+// Page Views (Analytics)
+model PageView {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  path      String
+  referrer  String?
+  userAgent String?  @map("user_agent")
+  ipAddress String?  @map("ip_address")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([path])
+  @@index([createdAt])
+  @@map("page_views")
+}

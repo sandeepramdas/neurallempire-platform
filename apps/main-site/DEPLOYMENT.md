@@ -1,245 +1,399 @@
-# 🚀 Deployment Guide
+# Deployment Guide - AI Systems Architect Website
 
-The NeurallEmpire platform now uses **dynamic rendering** (SSR) for the admin dashboard and blog system. This means we can't use purely static hosting.
+## 🎯 Pre-Deployment Checklist
 
-## ✅ Recommended Deployment Options
+Before deploying to production, ensure you have:
 
-### Option 1: Vercel (Recommended - Easiest)
-
-Vercel is built by the creators of Next.js and has the best support for dynamic rendering.
-
-**Steps:**
-
-1. **Install Vercel CLI**:
-   ```bash
-   pnpm add -g vercel
-   ```
-
-2. **Login to Vercel**:
-   ```bash
-   vercel login
-   ```
-
-3. **Deploy**:
-   ```bash
-   cd apps/main-site
-   vercel
-   ```
-
-4. **Add Environment Variables** in Vercel Dashboard:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_KEY`
-   - `NEXT_PUBLIC_SITE_URL` (your production URL)
-
-5. **Configure Custom Domain** (optional):
-   - In Vercel Dashboard → Settings → Domains
-   - Add `www.neurallempire.com`
-   - Update DNS in GoDaddy with provided CNAME
-
-**Cost**: Free tier includes:
-- Unlimited deployments
-- Custom domains
-- SSL certificates
-- Perfect for this project
+- [x] Built the site successfully (`npm run build`)
+- [ ] PostgreSQL database (local or cloud)
+- [ ] Environment variables configured
+- [ ] Domain name purchased
+- [ ] Hosting account (Vercel recommended)
 
 ---
 
-### Option 2: Railway
+## 📋 Step-by-Step Deployment
 
-Railway supports Next.js SSR and has great deployment experience.
+### Option 1: Deploy to Vercel (Recommended - Free Tier)
 
-**Steps:**
+Vercel is the creator of Next.js and offers the best integration with zero configuration.
 
-1. **Install Railway CLI** (if not already installed):
-   ```bash
-   npm i -g @railway/cli
-   ```
+#### 1. Create PostgreSQL Database
 
-2. **Login**:
-   ```bash
-   railway login
-   ```
+**Option A: Railway (Recommended - Free Tier)**
+```bash
+# 1. Go to https://railway.app
+# 2. Sign up with GitHub
+# 3. Click "New Project" > "Provision PostgreSQL"
+# 4. Copy the DATABASE_URL from the Connect tab
+```
 
-3. **Create New Project**:
-   ```bash
-   railway init
-   ```
+**Option B: Supabase (Free Tier)**
+```bash
+# 1. Go to https://supabase.com
+# 2. Create a new project
+# 3. Go to Settings > Database
+# 4. Copy the Connection String (Session mode)
+```
 
-4. **Add Environment Variables**:
-   ```bash
-   railway variables set NEXT_PUBLIC_SUPABASE_URL=https://ktcwakkpcgiusjuhlpjy.supabase.co
-   railway variables set NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-   railway variables set SUPABASE_SERVICE_KEY=your_service_key
-   railway variables set NEXT_PUBLIC_SITE_URL=https://your-domain.com
-   ```
+**Option C: Neon (Free Tier)**
+```bash
+# 1. Go to https://neon.tech
+# 2. Create a new project
+# 3. Copy the connection string
+```
 
-5. **Deploy**:
-   ```bash
-   cd apps/main-site
-   railway up
-   ```
+#### 2. Push Code to GitHub
 
-**Cost**: Free tier includes $5/month credit (enough for small sites)
+```bash
+# Initialize git if not already done
+git init
+git add .
+git commit -m "Initial commit: AI Systems website"
 
----
+# Create GitHub repository at https://github.com/new
+# Then push your code
+git remote add origin https://github.com/YOUR_USERNAME/ai-systems-website.git
+git branch -M main
+git push -u origin main
+```
 
-### Option 3: Cloudflare Pages with Functions
+#### 3. Deploy to Vercel
 
-Cloudflare Pages supports Next.js via their adapter, but requires some configuration.
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-**Steps:**
+# Deploy
+vercel
 
-1. **Install Next-on-Pages**:
-   ```bash
-   pnpm add -D @cloudflare/next-on-pages
-   ```
+# Follow the prompts:
+# - Link to existing project? No
+# - Project name: ai-systems-website
+# - Directory: ./
+# - Override settings? No
+```
 
-2. **Update package.json**:
-   ```json
-   {
-     "scripts": {
-       "pages:build": "npx @cloudflare/next-on-pages",
-       "pages:deploy": "wrangler pages deploy .vercel/output/static"
-     }
-   }
-   ```
+Or deploy via Vercel Dashboard:
+1. Go to https://vercel.com
+2. Click "Add New" > "Project"
+3. Import your GitHub repository
+4. Vercel will auto-detect Next.js
 
-3. **Build**:
-   ```bash
-   pnpm pages:build
-   ```
+#### 4. Configure Environment Variables in Vercel
 
-4. **Deploy**:
-   ```bash
-   pnpm pages:deploy
-   ```
+In Vercel Dashboard > Your Project > Settings > Environment Variables, add:
 
-**Note**: This option is more complex and may have limitations with some Next.js features.
+```env
+DATABASE_URL=your-postgresql-connection-string-here
+NEXTAUTH_URL=https://your-domain.vercel.app
+NEXTAUTH_SECRET=run-this-command: openssl rand -base64 32
+ADMIN_EMAIL=your-email@example.com
+NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
+NEXT_PUBLIC_SITE_NAME=AI Systems Architect
+```
 
----
+#### 5. Run Database Migrations
 
-## 🎯 Which Option Should You Choose?
+```bash
+# Connect to your deployed database
+DATABASE_URL="your-production-database-url" npx prisma migrate deploy
 
-| Platform | Ease of Use | Next.js Support | Cost | Best For |
-|----------|-------------|-----------------|------|----------|
-| **Vercel** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Free | **Recommended** |
-| **Railway** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | $5/mo credit | Good alternative |
-| **Cloudflare** | ⭐⭐⭐ | ⭐⭐⭐ | Free | Advanced users |
+# Or use Vercel CLI
+vercel env pull .env.production
+npx prisma migrate deploy
+```
 
-**Recommendation**: Use **Vercel** for the easiest and most reliable deployment.
+#### 6. Custom Domain (Optional)
 
----
-
-## 🔒 Environment Variables Checklist
-
-Before deploying, make sure you have these values:
-
-- [ ] `NEXT_PUBLIC_SUPABASE_URL` - From Supabase Dashboard
-- [ ] `NEXT_PUBLIC_SUPABASE_ANON_KEY` - From Supabase Dashboard
-- [ ] `SUPABASE_SERVICE_KEY` - From Supabase Dashboard
-- [ ] `NEXT_PUBLIC_SITE_URL` - Your production domain
-
-Get Supabase keys from:
-https://supabase.com/dashboard/project/ktcwakkpcgiusjuhlpjy/settings/api
-
----
-
-## 🌐 Custom Domain Setup
-
-### For Vercel:
-
-1. In Vercel Dashboard → Settings → Domains
-2. Add `www.neurallempire.com`
-3. Vercel will provide DNS records
-4. Add to GoDaddy:
-   - **Type**: CNAME
-   - **Name**: www
-   - **Value**: cname.vercel-dns.com (or provided value)
-
-### For Railway:
-
-1. In Railway Dashboard → Settings → Domains
-2. Click "Generate Domain" or "Custom Domain"
-3. Add custom domain: `www.neurallempire.com`
-4. Add to GoDaddy:
-   - **Type**: CNAME
-   - **Name**: www
-   - **Value**: Provided by Railway
+In Vercel Dashboard > Your Project > Settings > Domains:
+1. Click "Add Domain"
+2. Enter your domain (e.g., aisystems.com)
+3. Follow DNS configuration instructions
+4. Update environment variables with new domain
 
 ---
 
-## ✅ Post-Deployment Checklist
+### Option 2: Deploy to Railway (Alternative)
 
-After deployment:
+#### 1. Install Railway CLI
 
-- [ ] Visit your site and verify homepage loads
-- [ ] Test `/blog` - should show "No Blog Posts Yet" (until you create some)
-- [ ] Test `/admin/login` - should load login page
-- [ ] Create admin user in Supabase
-- [ ] Login and create a test blog post
-- [ ] Verify blog post appears on `/blog`
-- [ ] Test reading the blog post at `/blog/[slug]`
+```bash
+npm i -g @railway/cli
+railway login
+```
+
+#### 2. Create New Project
+
+```bash
+railway init
+```
+
+#### 3. Add PostgreSQL Database
+
+```bash
+railway add --database postgres
+```
+
+#### 4. Set Environment Variables
+
+```bash
+railway variables set NEXTAUTH_URL=https://your-railway-domain.up.railway.app
+railway variables set NEXTAUTH_SECRET=$(openssl rand -base64 32)
+railway variables set ADMIN_EMAIL=your-email@example.com
+```
+
+#### 5. Deploy
+
+```bash
+railway up
+```
+
+---
+
+## 🗄️ Database Setup
+
+### Run Migrations on Production Database
+
+```bash
+# Using production DATABASE_URL
+npx prisma migrate deploy
+
+# Verify migrations
+npx prisma migrate status
+```
+
+### Create First Admin User (Optional)
+
+You can manually create a user in Prisma Studio or via SQL:
+
+```bash
+# Open Prisma Studio connected to production
+npx prisma studio
+```
+
+Or create via SQL:
+```sql
+INSERT INTO "User" (id, name, email, role, "createdAt", "updatedAt")
+VALUES (
+  gen_random_uuid(),
+  'Your Name',
+  'your-email@example.com',
+  'ADMIN',
+  NOW(),
+  NOW()
+);
+```
+
+---
+
+## 🔐 Environment Variables Reference
+
+### Required Variables
+
+```env
+# Database
+DATABASE_URL="postgresql://user:password@host:port/database"
+
+# Authentication
+NEXTAUTH_URL="https://yourdomain.com"
+NEXTAUTH_SECRET="generate-with-openssl-rand-base64-32"
+
+# Site Configuration
+NEXT_PUBLIC_SITE_URL="https://yourdomain.com"
+NEXT_PUBLIC_SITE_NAME="AI Systems Architect"
+ADMIN_EMAIL="your-email@example.com"
+```
+
+### Optional Variables (for future features)
+
+```env
+# Google OAuth
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+
+# GitHub OAuth
+GITHUB_ID=""
+GITHUB_SECRET=""
+
+# Email (for contact form notifications)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="your-email@gmail.com"
+SMTP_PASSWORD="your-app-password"
+
+# Analytics
+NEXT_PUBLIC_GA_ID="G-XXXXXXXXXX"
+```
+
+---
+
+## 🎨 Post-Deployment Customization
+
+### 1. Update Site Content
+
+Edit these files with your information:
+- `app/layout.tsx` - Site metadata and SEO
+- `components/footer.tsx` - Social links, contact info
+- `app/about/page.tsx` - Your bio, experience, photos
+- `.env.local` and `.env.production` - Configuration
+
+### 2. Add Your Photos
+
+Replace placeholders in:
+- `public/` folder - Add your professional photo
+- `app/about/page.tsx` - Update image references
+
+### 3. Update Social Links
+
+In `components/footer.tsx`:
+```tsx
+const socialLinks = [
+  { name: "LinkedIn", href: "https://linkedin.com/in/yourprofile", icon: Linkedin },
+  { name: "Twitter", href: "https://twitter.com/yourhandle", icon: Twitter },
+  { name: "GitHub", href: "https://github.com/yourusername", icon: Github },
+  { name: "Email", href: "mailto:your-email@example.com", icon: Mail },
+]
+```
+
+### 4. Customize Colors (Optional)
+
+In `app/globals.css`, update the color variables:
+```css
+--color-primary-600: #2563eb;  /* Your primary brand color */
+--color-accent-500: #0ea5e9;   /* Your accent color */
+```
+
+---
+
+## 📊 Analytics Setup
+
+### Google Analytics 4
+
+1. Create GA4 property at https://analytics.google.com
+2. Get your Measurement ID (G-XXXXXXXXXX)
+3. Add to environment variables:
+```env
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+```
+
+### Vercel Analytics (Built-in)
+
+Already integrated! View analytics in Vercel Dashboard > Your Project > Analytics.
+
+---
+
+## 🔍 SEO Configuration
+
+### Submit to Search Engines
+
+**Google Search Console:**
+1. Go to https://search.google.com/search-console
+2. Add your property
+3. Verify ownership
+4. Submit sitemap: `https://yourdomain.com/sitemap.xml`
+
+**Bing Webmaster Tools:**
+1. Go to https://www.bing.com/webmasters
+2. Add your site
+3. Submit sitemap
+
+### Update Robots.txt (Optional)
+
+Create `public/robots.txt`:
+```
+User-agent: *
+Allow: /
+Sitemap: https://yourdomain.com/sitemap.xml
+```
+
+---
+
+## 🚀 Performance Optimization
+
+### 1. Image Optimization
+
+- Use WebP format for images
+- Compress images before uploading
+- Use Next.js `<Image>` component
+
+### 2. Monitoring
+
+- Set up Vercel Speed Insights (free)
+- Monitor Core Web Vitals
+- Check Lighthouse scores
+
+### 3. Caching
+
+Already optimized with Next.js automatic caching.
 
 ---
 
 ## 🐛 Troubleshooting
 
-### "Cannot find module '@/lib/supabase/server'"
-
-Make sure you're deploying from the correct directory:
-```bash
-cd apps/main-site
-vercel
-```
-
-### "Environment variables not found"
-
-Add them in your platform's dashboard:
-- **Vercel**: Settings → Environment Variables
-- **Railway**: Variables tab
-- **Cloudflare**: Settings → Environment Variables
-
-### Build fails with "output: export not supported"
-
-This is expected! We removed static export to enable the admin dashboard.
-
----
-
-## 📊 What Changed from Static Export?
-
-**Before**:
-- `next.config.js` had `output: 'export'`
-- Could deploy to Cloudflare Pages as static site
-- Admin dashboard didn't work (cookies error)
-
-**After**:
-- Removed `output: 'export'`
-- Requires SSR-capable platform (Vercel/Railway)
-- Admin dashboard fully functional
-- Blog system works perfectly
-
-**Why?**: The admin authentication system needs server-side cookie handling, which isn't possible with pure static export.
-
----
-
-## 🎉 Ready to Deploy!
-
-Recommended quick start:
+### Build Fails
 
 ```bash
-# Install Vercel CLI
-pnpm add -g vercel
-
-# Deploy
-cd apps/main-site
-vercel
-
-# Follow the prompts and you're live!
+# Clear cache and rebuild
+rm -rf .next
+npm run build
 ```
 
-Then add your environment variables in the Vercel dashboard and redeploy.
+### Database Connection Issues
+
+```bash
+# Test connection
+npx prisma db pull
+
+# Check migrations
+npx prisma migrate status
+```
+
+### Environment Variables Not Working
+
+- Ensure variables are set in Vercel Dashboard
+- Redeploy after changing variables
+- Check variable names match exactly
 
 ---
 
-**Questions?** Check the Vercel docs: https://vercel.com/docs/frameworks/nextjs
+## 📞 Support
+
+For deployment issues:
+1. Check Vercel/Railway logs
+2. Review environment variables
+3. Verify database connection string
+4. Test locally first with production env vars
+
+---
+
+## 🎉 You're Live!
+
+Once deployed:
+1. ✅ Test all pages
+2. ✅ Submit contact form
+3. ✅ Verify navigation works
+4. ✅ Test on mobile devices
+5. ✅ Set up Google Analytics
+6. ✅ Submit to search engines
+7. ✅ Share on social media!
+
+---
+
+**Deployment Checklist:**
+- [ ] Database created and migrations run
+- [ ] Environment variables configured
+- [ ] Site deployed to Vercel/Railway
+- [ ] Custom domain configured (if applicable)
+- [ ] Contact form tested
+- [ ] Social links updated
+- [ ] Analytics configured
+- [ ] Submitted to Google Search Console
+- [ ] Site tested on mobile
+- [ ] Professional photo added
+
+---
+
+**Your site is now live! 🚀**
+
+Next steps: Start creating content, customize with your information, and begin driving traffic.
