@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@neurallempire/ui'],
-  output: 'export',
+  // Remove static export to enable dynamic admin features
+  // output: 'export',
   images: {
     unoptimized: true,
   },
