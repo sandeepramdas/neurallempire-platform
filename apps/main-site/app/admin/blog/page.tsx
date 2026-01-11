@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { PenSquare, Eye, EyeOff, Calendar } from 'lucide-react'
+import { PenSquare, Eye, EyeOff, Calendar, FileText } from 'lucide-react'
 
 interface BlogPost {
   id: string
