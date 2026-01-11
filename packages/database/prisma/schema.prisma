@@ -85,3 +85,102 @@ enum SubscriptionStatus {
   past_due
   trialing
 }
+
+// CMS Models for Website Content
+
+// Blog Posts
+model BlogPost {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title          String
+  slug           String    @unique
+  content        String    @db.Text
+  excerpt        String?   @db.Text
+  featuredImage  String?   @map("featured_image")
+  authorId       String    @map("author_id") @db.Uuid
+  category       String?
+  tags           String[]
+  published      Boolean   @default(false)
+  publishedAt    DateTime? @map("published_at") @db.Timestamptz(6)
+  metaTitle      String?   @map("meta_title")
+  metaDescription String?  @map("meta_description")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([slug])
+  @@index([published])
+  @@index([category])
+  @@map("blog_posts")
+}
+
+// Case Studies
+model CaseStudy {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title         String
+  slug          String   @unique
+  clientName    String   @map("client_name")
+  clientLogo    String?  @map("client_logo")
+  industry      String
+  productUsed   String   @map("product_used")
+  challenge     String   @db.Text
+  solution      String   @db.Text
+  results       Json?
+  testimonial   String?  @db.Text
+  featuredImage String?  @map("featured_image")
+  published     Boolean  @default(false)
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([slug])
+  @@index([industry])
+  @@index([published])
+  @@map("case_studies")
+}
+
+// Client Testimonials
+model Testimonial {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clientName    String   @map("client_name")
+  clientRole    String   @map("client_role")
+  clientCompany String   @map("client_company")
+  clientAvatar  String?  @map("client_avatar")
+  content       String   @db.Text
+  rating        Int      @default(5)
+  featured      Boolean  @default(false)
+  productUsed   String?  @map("product_used")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([featured])
+  @@map("testimonials")
+}
+
+// Products (for dynamic product management)
+model Product {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  slug            String   @unique
+  description     String   @db.Text
+  longDescription String?  @map("long_description") @db.Text
+  features        Json?
+  pricing         Json?
+  icon            String?
+  color           String?
+  category        String?
+  status          ProductStatus @default(live)
+  url             String?
+  demoUrl         String?  @map("demo_url")
+  order           Int      @default(0)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([slug])
+  @@index([status])
+  @@map("products")
+}
+
+enum ProductStatus {
+  live
+  beta
+  coming_soon
+}

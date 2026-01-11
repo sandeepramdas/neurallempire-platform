@@ -36,10 +36,6 @@ export default function EditBlogPostPage() {
     published: false,
   })
 
-  useEffect(() => {
-    loadPost()
-  }, [postId])
-
   const loadPost = async () => {
     try {
       const supabase = createClient()
@@ -69,6 +65,11 @@ export default function EditBlogPostPage() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    loadPost()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postId])
 
   const generateSlug = (title: string) => {
     return title
