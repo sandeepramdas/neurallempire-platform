@@ -1,0 +1,13 @@
+[phases.setup]
+nixPkgs = ["nodejs", "pnpm"]
+
+[phases.install]
+cmds = ["pnpm install --frozen-lockfile"]
+
+[phases.build]
+cmds = [
+  "pnpm --filter @neurallempire/main-site build"
+]
+
+[start]
+cmd = "pnpm --filter @neurallempire/main-site start"
