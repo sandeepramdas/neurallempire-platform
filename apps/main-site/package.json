@@ -1,14 +1,15 @@
 {
-  "name": "ai-systems-website",
+  "name": "@neurallempire/main-site",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx prisma generate --schema=../../packages/database/prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@neurallempire/database": "workspace:*",
     "@auth/prisma-adapter": "^2.11.1",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/adapter-pg": "^7.2.0",
