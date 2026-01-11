@@ -12,33 +12,33 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "AI-First Digital Systems Architect | Custom CRM & Internal Software",
-    template: "%s | AI Systems Architect"
+    default: "NeurallEmpire | AI-Powered SaaS Solutions for Modern Businesses",
+    template: "%s | NeurallEmpire"
   },
-  description: "Transform your business operations with custom digital systems designed for how you actually work. AI-powered, scalable, and built to evolve with you.",
-  keywords: ["custom CRM development", "fractional CTO services", "custom ERP system", "AI business automation", "digital systems consultant", "custom business software"],
-  authors: [{ name: "AI Systems Architect" }],
-  creator: "AI Systems Architect",
+  description: "Transform your business with NeurallEmpire's suite of AI-powered SaaS products. From CRM to vendor management, milk delivery to construction ERP - we've got you covered.",
+  keywords: ["AI SaaS platform", "business automation", "custom CRM", "vendor management", "milk delivery software", "construction ERP", "property management", "Nandos POS", "AI-powered business tools"],
+  authors: [{ name: "NeurallEmpire" }],
+  creator: "NeurallEmpire",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://example.com",
-    siteName: "AI Systems Architect",
-    title: "AI-First Digital Systems Architect | Custom CRM & Internal Software",
-    description: "Transform your business operations with custom digital systems designed for how you actually work.",
+    url: "https://www.neurallempire.com",
+    siteName: "NeurallEmpire",
+    title: "NeurallEmpire | AI-Powered SaaS Solutions for Modern Businesses",
+    description: "Transform your business with NeurallEmpire's suite of AI-powered SaaS products.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "AI Systems Architect",
+        alt: "NeurallEmpire",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI-First Digital Systems Architect",
-    description: "Custom digital systems for growing businesses",
+    title: "NeurallEmpire | AI-Powered SaaS Solutions",
+    description: "AI-powered SaaS products for modern businesses",
     images: ["/og-image.jpg"],
   },
   robots: {

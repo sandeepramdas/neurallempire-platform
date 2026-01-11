@@ -4,15 +4,15 @@ import { Linkedin, Twitter, Github, Mail } from "lucide-react"
 const footerLinks = {
   company: [
     { name: "About", href: "/about" },
+    { name: "Products", href: "/products" },
     { name: "Services", href: "/services" },
-    { name: "Process", href: "/process" },
     { name: "Blog", href: "/blog" },
   ],
-  services: [
-    { name: "Custom CRM", href: "/services#crm" },
-    { name: "Custom ERP", href: "/services#erp" },
-    { name: "AI Automation", href: "/services#automation" },
-    { name: "Fractional CTO", href: "/about#cto" },
+  products: [
+    { name: "AI Platform", href: "/products#ai-platform" },
+    { name: "VendorNet", href: "/products#vendornet" },
+    { name: "Milk Delivery", href: "/products#milkdelivery" },
+    { name: "View All", href: "/products" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -36,12 +36,11 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                AI Systems
+                NeurallEmpire
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-md">
-              Custom digital systems designed around how your business actually works.
-              AI-first system architect helping business owners build platforms for growth.
+              AI-powered SaaS solutions for modern businesses. From vendor management to dairy delivery, we build products that scale with you.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => {

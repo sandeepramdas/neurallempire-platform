@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils"
 
 const navItems = [
   { name: "Home", href: "/" },
+  { name: "Products", href: "/products" },
   { name: "Services", href: "/services" },
-  { name: "Process", href: "/process" },
   { name: "About", href: "/about" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
@@ -54,7 +54,7 @@ export function Navigation() {
               className="flex items-center"
             >
               <span className="text-2xl font-bold gradient-text">
-                AI Systems
+                NeurallEmpire
               </span>
             </motion.div>
           </Link>
